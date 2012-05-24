@@ -1,5 +1,5 @@
 import java.io.*;
-class Probability
+class p1
 {
       public static double w1(double N,double n,double R,double r)  //----------->This function Calculates and returns W1 value.
       {
@@ -114,6 +114,7 @@ public static void main(String s2[])throws Exception //------------------->This 
    b=new BufferedReader(new InputStreamReader(System.in));
    String query[],documents[],s[],s1[];
    File fp,fp2;
+fr f=new fr();
 
    print("\nEnter the Query:");
    query=(b.readLine()).split(" ");
@@ -144,8 +145,8 @@ public static void main(String s2[])throws Exception //------------------->This 
   
       if(fp2.isFile())
       {
-
-         documents[j]=fp1.readLine();
+//String fs=(fp2+"");
+         documents[j]=f.readFile(fp2);
          print("\nEnter the Relevance status of document (-->"+documents[j]+"<--) "+(j+1)+" (1/0):");
          documents[j]=documents[j]+" "+b.readLine();
          s=documents[j].split(" ");
