@@ -1,12 +1,8 @@
 import java.util.*;
-
 import java.io.*;
-
-
-public class Vsm
+public class VectorSpaceModel
 {
 int no_of_doc;
-
 String query;
 ArrayList doc_al=new ArrayList();
 ArrayList unique_words=new ArrayList();
@@ -15,10 +11,9 @@ ArrayList tf_idf_al=new ArrayList();
 ArrayList tf_idf_query=new ArrayList();
 ArrayList <Double> similarity_al=new ArrayList<Double>();
 ArrayList doc_paths=new ArrayList();
-
- void get_Documents_From_Directory(String dir_name)throws IOException
-
+void get_Documents_From_Directory(String dir_name)throws IOException
 {
+fr f=new fr();
 File directory = new File(dir_name);
 File[] list_of_files = directory.listFiles();
 for (int j = 0; j < list_of_files.length; j++)
@@ -29,30 +24,18 @@ get_Documents_From_Directory(list_of_files[j].getAbsolutePath());
 }
 if(list_of_files[j].isFile())
 {
-
 File path=list_of_files[j];
-FileReader fr = new FileReader(path);
-
-BufferedReader br = new BufferedReader(fr);
-
 String doc_content = "";
- 
-while (br.ready())
-{
-doc_content += br.readLine() + "\n";
-}
+doc_content=(f.readFile(path));
 doc_al.add(doc_content);
 doc_paths.add(list_of_files[j]);
 get_Unique_Words(doc_content);
 }
-
 }
 }
-
 void get_Unique_Words(String doc)
 {
 StringTokenizer st = new StringTokenizer(doc);
-
 String word;
 while(st.hasMoreTokens())
 {
@@ -96,8 +79,7 @@ while(st.hasMoreTokens())
              idf=Math.log10(value);
              idf_al.add(idf);   
             }
-            
-        }
+           }
     }
     boolean word_Check(String word,String doc)
     {
@@ -203,5 +185,15 @@ public static void main(String[] s1)throws Exception
 String s[][]=new Vsm().start("World cup","D:/Online Library/Docs");
 for(int n=0;n<s.length;n++)
 System.out.println(s[n][0]+"----"+s[n][1]); 
+for(int n=0;n<s.length;n++)
+{
+if(Double.parseDouble(s[n][1])>0.1)
+s[n][1]=""+1;
+else
+s[n][1]=""+0;
+System.out.println(s[n][0]+"----"+s[n][1]); 
+}
+Probability p=new Probability();
+p.start("World cup",s);
 }
 }

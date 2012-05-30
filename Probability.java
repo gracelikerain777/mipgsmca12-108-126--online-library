@@ -1,5 +1,5 @@
 import java.io.*;
-class p1
+class Probability
 {
       public static double w1(double N,double n,double R,double r)  //----------->This function Calculates and returns W1 value.
       {
