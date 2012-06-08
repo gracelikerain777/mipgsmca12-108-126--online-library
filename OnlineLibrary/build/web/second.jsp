@@ -7,19 +7,19 @@
        
     </head>
     <body>
-        
-        <form name="f2" action="second.jsp">
-          <img src="Online1.jpg" height="50" width="150" />
-          <input type="text" name="t1" value=""  size="50" />
-          <input type="submit" value="Search" name="b1">
-        <%@page import="P.Search,P.Read" %>
         <%!
         String s1[],s2,q[],d[];
         int a[],x;
         int i=0;
         %>
+        <form name="f2" action="second.jsp">
+          <img src="Online1.jpg" height="50" width="150" />
+          <%String s=request.getParameter("t1");%>
+          <input type="text" name="t1" value="<%=s%>"  size="50" />
+          <input type="submit" value="Search" name="b1">
+        <%@page import="P.Search,P.Read" %>
+        
         <%
-                String s=request.getParameter("t1");
                 Search se=new Search();
                 s1=se.start(s);
             for(int i=0;i<s1.length;i++)
@@ -27,7 +27,7 @@
                 Read R=new Read();
                 s2=R.readFile(s1[i]);
            s1[i]=s1[i].substring(s1[i].lastIndexOf("\\") + 1, s1[i].length());
-            out.println("<br><br><A href=\"srcdoc/"+s1[i]+"\">"+s1[i]+"</A><br>");
+            out.println("<br><br><a href=\"rankpage?page="+"srcdoc/"+s1[i]+"\">"+s1[i]+"</a><br>");
             
             
             q=s.split(" ");
@@ -47,7 +47,7 @@ for(int j=0;j<x;j++)
 if(a[j]==0)
 out.print(d[j]+" ");
 else
-out.print("<b>"+d[j]+"</b> ");
+out.print("<b><u style='color: #ff0000'>"+d[j]+"</u></b> ");
             
                 }
                 

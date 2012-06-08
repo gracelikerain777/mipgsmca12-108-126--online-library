@@ -1,5 +1,6 @@
 import java.io.*;
-public class feop {
+public class feop 
+{
  
 	public static void main(String[] args) {
  
