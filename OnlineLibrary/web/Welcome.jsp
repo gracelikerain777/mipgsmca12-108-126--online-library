@@ -1,3 +1,8 @@
+<%-- 
+    Document   : Welcome
+    Created on : Jun 8, 2012, 11:01:16 AM
+    Author     : Sathish
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -5,7 +10,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <form name="f1" action="second.jsp">
+    <form name="f1" action="Search.jsp">
     
         <pre>
 

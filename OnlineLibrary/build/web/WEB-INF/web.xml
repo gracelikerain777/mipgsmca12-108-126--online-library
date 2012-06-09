@@ -3,6 +3,15 @@
     <welcome-file-list>
         <welcome-file>Welcome.jsp</welcome-file>
     </welcome-file-list>
+    <!--<servlet>
+    <servler-name>uploadfile</servler-name>    
+    <servlet-class>uploadfile</servlet-class>
+    </servlet>
+    <servlet-mapping>
+    <servlet-name>uploadfile</servlet-name>
+    <url-pattern>/uploadfile</url-pattern>
+    </servlet-mapping>-->
+    
     <session-config>
         <session-timeout>
             30

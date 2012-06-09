@@ -1,5 +1,9 @@
+/*
+    Document   : Read.java
+    Created on : Jun 6, 2012, 3:17:45 AM
+    Author     : Sathish
+*/
 package P;
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;

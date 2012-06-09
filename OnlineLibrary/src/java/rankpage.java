@@ -1,3 +1,8 @@
+/*
+    Document   : rankpage.java
+    Created on : Jun 9, 2012, 10:40:45 AM
+    Author     : Sathish
+*/
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -5,22 +10,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-/**
- *
- * @author Sathish
- */
 @WebServlet(name = "rankpage", urlPatterns = {"/rankpage"})
 public class rankpage extends HttpServlet {
-
+String s,s1;
  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
  PrintWriter out = response.getWriter();
         try {
-            
-            
-            String s=request.getParameter("page");
+            s1=request.getParameter("query");
+           System.out.println("t1=>"+s1);
+            s=request.getParameter("page");
             response.sendRedirect(s);
              
             
