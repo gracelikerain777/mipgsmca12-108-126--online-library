@@ -25,7 +25,7 @@ public void p(String s)
 {
 System.out.println ("\n"+s);
 }
-void insertQuery(String s)throws Exception
+int insertQuery(String s)throws Exception
 {
 int n,i,j,d;
 try
@@ -47,7 +47,7 @@ qrs[i]=rs.getString(1);
 p(qrs[i]);
 i++;
 }
-for(i=0;i<qrs.length;i=i+1)
+for(i=0;i<qrs.length;i++)
 {
 d=isMatch(s,qrs[i]);
 p(qrs[i]+" "+i+" "+d);
@@ -55,29 +55,31 @@ if(d==1)
 break;
 }
 if(d==0)
-st.executeUpdate("insert into QUERY1 values("+(n+1)+",'"+s+"')");
+st.executeUpdate("insert into QUERY1 values("+(i+1)+",'"+s+"')");
+return i+1;
 }
 else
 st.executeUpdate("insert into QUERY1 values(1,'"+s+"')");
+return 1;
 }
 catch (SQLException e)
 {
 String es=e.toString();
 if(eh(e).equalsIgnoreCase("ORA-00942"))
 {
-st.executeUpdate("create table QUERY1(QID number(6),QRY varchar2(50))");
-insertQuery(s);
+st.executeUpdate("CREATE TABLE QUERY1(QID NUMBER(6) PRIMARY KEY,QRY VARCHAR2(50))");
+st.executeUpdate("commit");
+return insertQuery(s);
 }
-else
-System.out.println(e.toString());
 }
+return -1;
 }
 String eh(SQLException e)
 {
 String es=e.toString();
 return (es.substring(es.indexOf(":")+1,es.lastIndexOf(":"))).trim();
 }
-void insertDocument(String s)throws Exception
+int insertDocument(String s)throws Exception
 {
 int n,i,j,d;
 try
@@ -107,22 +109,63 @@ if(d==1)
 break;
 }
 if(d==0)
-st.executeUpdate("insert into Document1 values("+(n+1)+",'"+s+"')");
+st.executeUpdate("insert into Document1 values("+(i+1)+",'"+s+"')");
+return i+1;
 }
 else
 st.executeUpdate("insert into Document1 values(1,'"+s+"')");
+return 1;
 }
 catch (SQLException e)
 {
 String es=e.toString();
 if(eh(e).equalsIgnoreCase("ORA-00942"))
 {
-st.executeUpdate("create table Document1(DID number(6),DNAME varchar2(50))");
-insertDocument(s);
+st.executeUpdate("CREATE TABLE DOCUMET1(DID NUMBER(6) PRIMARY KEY,DNAME VARCHAR2(50))");
+st.executeUpdate("commit");
+return insertDocument(s);
+}
+}
+return -1;
+}
+int getRank(String qs,String ds)throws Exception
+{
+int q,n,d=insertDocument(ds);
+n=1;
+q=insertQuery(qs);
+try
+{
+rs=st.executeQuery("select count(*) from Rank1 where qid="+q+" and did="+d);
+while(rs.next())
+n=rs.getInt(1);
+p("---------->n value in getrank:try"+n);
+if((n==0))
+{
+st.executeUpdate("insert into Rank1 values("+q+","+d+","+"0)");
+p("---------->n value in getrank:if"+n);
+return 0;
 }
 else
-System.out.println(e.toString());
+{
+p("---------->n value in getrank:else:"+n);
+rs=st.executeQuery("select rnk from Rank1 where qid="+q+" and did="+d);
+while(rs.next())
+n=rs.getInt(1);
+return n;
 }
+}
+catch(SQLException e)
+{
+String es=e.toString();
+if(eh(e).equalsIgnoreCase("ORA-00942"))
+{
+st.executeUpdate("CREATE TABLE RANK1(QID NUMBER(6) REFERENCES QUERY1(QID),DID NUMBER(6) REFERENCES DOCUMENT1(DID),RNK NUMBER(6) PRIMARY KEY(QID,DID))");
+st.executeUpdate("commit");
+return getRank(qs,ds);
+}
+}
+p("---------->n value in getrank:"+n);
+return -1;
 }
 int isMatch(String s,String s1)
 {
@@ -152,9 +195,12 @@ BufferedReader b=new BufferedReader(new InputStreamReader(System.in));
 d.p("\nEnter Query");
 try
 {
-d.insertQuery(b.readLine());
+s=b.readLine();
+d.p("Query id is:"+d.insertQuery(s));
 d.p("\nEnter Documnent name:");
-d.insertDocument(b.readLine());
+s1=b.readLine();
+d.p("\nDocument id is:"+d.insertDocument(s1));
+d.p("\nRank is:"+d.getRank(s,s1));
 }
 catch(Exception e)
 {
