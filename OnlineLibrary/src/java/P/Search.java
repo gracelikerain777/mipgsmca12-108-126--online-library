@@ -478,6 +478,6 @@ public class Search {
             }
         }
         p2 p = new p2();
-        return p.start("World cup", s);
+        return p.start(s1, s);
     }
 }

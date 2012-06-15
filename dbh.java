@@ -121,7 +121,7 @@ catch (SQLException e)
 String es=e.toString();
 if(eh(e).equalsIgnoreCase("ORA-00942"))
 {
-st.executeUpdate("CREATE TABLE DOCUMET1(DID NUMBER(6) PRIMARY KEY,DNAME VARCHAR2(50))");
+st.executeUpdate("CREATE TABLE DOCUMENT1(DID NUMBER(6) PRIMARY KEY,DNAME VARCHAR2(50))");
 st.executeUpdate("commit");
 return insertDocument(s);
 }
@@ -159,7 +159,7 @@ catch(SQLException e)
 String es=e.toString();
 if(eh(e).equalsIgnoreCase("ORA-00942"))
 {
-st.executeUpdate("CREATE TABLE RANK1(QID NUMBER(6) REFERENCES QUERY1(QID),DID NUMBER(6) REFERENCES DOCUMENT1(DID),RNK NUMBER(6) PRIMARY KEY(QID,DID))");
+st.executeUpdate("CREATE TABLE RANK1(QID NUMBER(6) REFERENCES QUERY1(QID),DID NUMBER(6) REFERENCES DOCUMENT1(DID),RNK NUMBER(6), PRIMARY KEY(QID,DID))");
 st.executeUpdate("commit");
 return getRank(qs,ds);
 }
@@ -187,24 +187,4 @@ return 1;
 else
 return 0;
 } 
-public static void main(String[] args)throws Exception
-{
-dbh d=new dbh();
-String s,s1;
-BufferedReader b=new BufferedReader(new InputStreamReader(System.in));
-d.p("\nEnter Query");
-try
-{
-s=b.readLine();
-d.p("Query id is:"+d.insertQuery(s));
-d.p("\nEnter Documnent name:");
-s1=b.readLine();
-d.p("\nDocument id is:"+d.insertDocument(s1));
-d.p("\nRank is:"+d.getRank(s,s1));
-}
-catch(Exception e)
-{
-e.printStackTrace();
-}
-}
 };
