@@ -3,6 +3,7 @@
     Created on : Jun 9, 2012, 10:40:45 AM
     Author     : Sathish
 */
+import P.DBHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,16 +16,21 @@ public class rankpage extends HttpServlet {
 String s,s1;
  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+     DBHandler od=new DBHandler();
         response.setContentType("text/html;charset=UTF-8");
  PrintWriter out = response.getWriter();
         try {
             s1=request.getParameter("query");
-           System.out.println("t1=>"+s1);
             s=request.getParameter("page");
-            response.sendRedirect(s);
-             
+            od.increaseRank(s1,s.substring(s.lastIndexOf("\\") + 1, s.length()));
+           System.out.println("t1=>"+s1);
             
-        } finally {            
+            response.sendRedirect(s);
+           }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }finally {            
             out.close();
         }    }
 

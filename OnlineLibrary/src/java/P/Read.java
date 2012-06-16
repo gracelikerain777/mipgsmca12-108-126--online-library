@@ -4,7 +4,6 @@
     Author     : Sathish
 */
 package P;
-import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import java.util.*;

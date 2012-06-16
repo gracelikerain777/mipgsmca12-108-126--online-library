@@ -230,14 +230,14 @@ class p2 {
 
     public String[] start(String q, String d[][]) throws Exception {
         int i, j = 0, N, R = 0, n[], r[], k;
-        BufferedReader b, fp1;
+        BufferedReader fp1;
         String query[], documents[], s[], s1[];
         File fp[];
         fr f = new fr();
         query = q.split(" ");
         n = new int[query.length];
         r = new int[query.length];
-        double w[][], D[][], v[][];
+        double w[][], D[][], v[][],u[][];
         w = new double[4][query.length];
         N = d.length;
         fp = new File[N];
@@ -283,13 +283,27 @@ class p2 {
                 D[3][j] += w[3][i] * v[i][j];
             }
         }
-        for (j = 0; j < N; j++) {
-            documents[j] = documents[j].replace('1', ' ');
-            documents[j] = documents[j].replace('0', ' ');
-        }
         v = new double[2][N];
-        String sd[] = new String[N];
-        for (i = 0; i < 1; i++) {
+for(i=0;i<N;i++)
+{
+s1[i]=d[i][0].substring(d[i][0].lastIndexOf("\\")+1,d[i][0].length());
+//print("file to gerank:"+s1[i]);
+}
+u=new double[N][3];
+for(i=0;i<N;i++)
+{
+u[i][0]=od.getRank(q,s1[i]);
+//print("\nThe Rank of "+s1[i]+" is "+u[i][0]);
+u[i][1]=D[0][i];
+//print("\nThe weight: of "+s1[i]+" is "+u[i][1]);
+u[i][2]=i;
+//print("\nThe Index of "+s1[i]+" is "+u[i][2]);
+}
+u=sort(u);
+for(i=0;i<N;i++)
+s1[i]=d[(int)u[i][2]][0]);
+        //String sd[] = new String[N];
+      /*  for (i = 0; i < 1; i++) {
             for (j = 0; j < N; j++) {
                 v[0][j] = 0;
                 v[1][j] = D[i][j];
@@ -299,8 +313,8 @@ class p2 {
                 v[0][k] = 1;
                 sd[j] = fp[k].getAbsolutePath();
             }
-        }
-        return sd;
+        }*/
+        return s1;
     }
 }
 
@@ -475,6 +489,6 @@ public class Search {
             }
         }
         p2 p = new p2();
-        return p.start("World cup", s);
+        return p.start(s1, s);
     }
 }
