@@ -13,8 +13,8 @@
     </head>
     <body>
         <div align="center">
-        <form action="uploadfile" method="POST" ENCTYPE="multipart/form-data" >
-            <pre>
+            <form action="uploadfile" method="POST" ENCTYPE="multipart/form-data" >
+                <pre>
             <center>
 
 
@@ -27,10 +27,10 @@
 
 <b>Select File:</b><input class="n" type="file" name="file"/>   <input type="submit" value="Upload" /></center>
         
-            </pre>
-        </form>
-           
+                </pre>
+            </form>
+
         </div>
-        
+
     </body>
 </html>

@@ -52,8 +52,8 @@ public final class upload_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    </head>\n");
       out.write("    <body>\n");
       out.write("        <div align=\"center\">\n");
-      out.write("        <form action=\"uploadfile\" method=\"POST\" ENCTYPE=\"multipart/form-data\" >\n");
-      out.write("            <pre>\n");
+      out.write("            <form action=\"uploadfile\" method=\"POST\" ENCTYPE=\"multipart/form-data\" >\n");
+      out.write("                <pre>\n");
       out.write("            <center>\n");
       out.write("\n");
       out.write("\n");
@@ -66,11 +66,11 @@ public final class upload_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("<b>Select File:</b><input class=\"n\" type=\"file\" name=\"file\"/>   <input type=\"submit\" value=\"Upload\" /></center>\n");
       out.write("        \n");
-      out.write("            </pre>\n");
-      out.write("        </form>\n");
-      out.write("           \n");
+      out.write("                </pre>\n");
+      out.write("            </form>\n");
+      out.write("\n");
       out.write("        </div>\n");
-      out.write("        \n");
+      out.write("\n");
       out.write("    </body>\n");
       out.write("</html>\n");
     } catch (Throwable t) {

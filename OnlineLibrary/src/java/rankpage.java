@@ -1,8 +1,9 @@
 /*
-    Document   : rankpage.java
-    Created on : Jun 9, 2012, 10:40:45 AM
-    Author     : Sathish
-*/
+Document   : rankpage.java
+Created on : Jun 9, 2012, 10:40:45 AM
+Author     : Sathish
+ */
+
 import P.DBHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,28 +12,28 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 @WebServlet(name = "rankpage", urlPatterns = {"/rankpage"})
 public class rankpage extends HttpServlet {
-String s,s1;
- protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+
+    String s, s1;
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-     DBHandler od=new DBHandler();
+        DBHandler od = new DBHandler();
         response.setContentType("text/html;charset=UTF-8");
- PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter();
         try {
-            s1=request.getParameter("query");
-            s=request.getParameter("page");
-            od.increaseRank(s1,s.substring(s.lastIndexOf("\\") + 1, s.length()));
-           System.out.println("t1=>"+s1);
-            
+            s1 = request.getParameter("query");
+            s = request.getParameter("page");
+            od.increaseRank(s1, s.substring(s.lastIndexOf("/") + 1, s.length()));
             response.sendRedirect(s);
-           }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {            
+        } finally {
             out.close();
-        }    }
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

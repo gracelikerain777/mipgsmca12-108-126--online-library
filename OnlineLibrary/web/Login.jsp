@@ -17,20 +17,23 @@ p { color:#FFFFFF;font-size:10pt; font-family:Lucida Fax }
         
     </head>
     <body >
-        <form name="l1" action="Welcome.jsp">
+        <form name="l1" action="return validate()">
             <center>
                 <pre>
 
 
-      <img src="Online1.jpg" height="100" width="300">       
+          <img src="Online1.jpg" height="100" width="300">       
 <b><p><u> A Web Service Lets You to store and Retrieve Books,Documents in Online.</u></p></b>
     
 <table>
-    <tr><td><b>Enter User ID</b>     </td><td><input type="text" name="t1" id="t1"></td></tr>
+
+<tr><td><b>Enter User ID</b>     </td><td><input type="text" name="t1" id="t1"></td></tr>
 <tr><td><b>Enter Password </b></td><td><input type="password" name="t2" id="t2"></td></tr>
+<tr><td><input type="submit" value="Login" id="s1" ></td></tr>
+<tr><td id="loginerror" style="color: #ffff00;font-size: 20px;text-decoration: blink" ></td></tr>
+
 </table>
-             <input type="submit" value="Login" id="s1">
-        </pre>
+</pre>
     </center>
         </form>
     </body>
