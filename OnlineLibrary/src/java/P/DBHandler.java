@@ -54,7 +54,7 @@ public class DBHandler {
         } catch (SQLException e) {
             String es = e.toString();
             if (eh(e).equalsIgnoreCase("ORA-00942")) {
-                st.executeUpdate("CREATE TABLE DOCUMENTS(DID NUMBER(6) PRIMARY KEY,DNAME VARCHAR2(50))");
+                st.executeUpdate("CREATE TABLE DOCUMENTS(DID NUMBER(6) PRIMARY KEY,DNAME VARCHAR2(50) NOT NULL)");
                 st.executeUpdate("commit");
                 return 0;
             }
@@ -97,7 +97,7 @@ public class DBHandler {
         } catch (SQLException e) {
             String es = e.toString();
             if (eh(e).equalsIgnoreCase("ORA-00942")) {
-                st.executeUpdate("CREATE TABLE DOCUMENTS(DID NUMBER(6) PRIMARY KEY,DNAME VARCHAR2(50))");
+                st.executeUpdate("CREATE TABLE DOCUMENTS(DID NUMBER(6) PRIMARY KEY,DNAME VARCHAR2(50) NOT NULL)");
                 st.executeUpdate("commit");
             }
         }
@@ -137,7 +137,7 @@ public class DBHandler {
         } catch (SQLException e) {
             String es = e.toString();
             if (eh(e).equalsIgnoreCase("ORA-00942")) {
-                st.executeUpdate("CREATE TABLE QUERRIES(QID NUMBER(6) PRIMARY KEY,QRY VARCHAR2(50))");
+                st.executeUpdate("CREATE TABLE QUERRIES(QID NUMBER(6) PRIMARY KEY,QRY VARCHAR2(50)NOT NULL)");
                 st.executeUpdate("commit");
                 return insertQuery(s);
             }
@@ -184,7 +184,7 @@ public class DBHandler {
         } catch (SQLException e) {
             String es = e.toString();
             if (eh(e).equalsIgnoreCase("ORA-00942")) {
-                st.executeUpdate("CREATE TABLE DOCUMENTS(DID NUMBER(6) PRIMARY KEY,DNAME VARCHAR2(50))");
+                st.executeUpdate("CREATE TABLE DOCUMENTS(DID NUMBER(6) PRIMARY KEY,DNAME VARCHAR2(50) NOT NULL)");
                 st.executeUpdate("commit");
                 return insertDocument(s);
             }
@@ -214,7 +214,7 @@ public class DBHandler {
         } catch (SQLException e) {
             String es = e.toString();
             if (eh(e).equalsIgnoreCase("ORA-00942")) {
-                st.executeUpdate("CREATE TABLE RANKS(QID NUMBER(6) REFERENCES QUERRIES(QID),DID NUMBER(6) REFERENCES DOCUMENTS(DID),RNK NUMBER(6), PRIMARY KEY(QID,DID))");
+                st.executeUpdate("CREATE TABLE RANKS(QID NUMBER(6) REFERENCES QUERRIES(QID),DID NUMBER(6) REFERENCES DOCUMENTS(DID),RNK NUMBER(6) NOT NULL, PRIMARY KEY(QID,DID))");
                 st.executeUpdate("commit");
                 return getRank(qs, ds);
             }

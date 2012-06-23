@@ -17,6 +17,7 @@ public class uploadfile extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try{
         PrintWriter out = response.getWriter();
         String contentType = request.getContentType();
         out.println("content type-->" + contentType);
@@ -46,19 +47,27 @@ public class uploadfile extends HttpServlet {
             int boundaryLocation = file.indexOf(boundary, pos) - 4;
             int startPos = ((file.substring(0, pos)).getBytes()).length;
             int endPos = ((file.substring(0, boundaryLocation)).getBytes()).length;
-            saveFile = "D:\\" + saveFile;
-
+            if(saveFile.substring(saveFile.lastIndexOf(".")+1,saveFile.length()).equalsIgnoreCase("exe"))
+            throw new Exception("<br><br>Sorry,<br><br>Excuted files(.exe) does not allowed to upload because of security purpose.");
+            
+            saveFile = "I:\\" + saveFile;
+            
             FileOutputStream fileOut = new FileOutputStream(saveFile);
             fileOut.write(dataBytes, startPos, (endPos - startPos));
             fileOut.flush();
             fileOut.close();
-            out.println("br>file uploded.");
+            out.println("<br>file uploded.");
         } else {
             out.println("Please Select a file.");
         }
 
     }
-
+        catch(Exception e)
+        {
+        response.sendRedirect("Ex.jsp?hidden="+e.toString());
+        }
+        }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

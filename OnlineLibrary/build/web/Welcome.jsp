@@ -25,7 +25,7 @@
             <td><img src="Online1.jpg" height="100" width="300" /></td>
             </tr>
 
-        <tr><td><input type="text" name="t1" value="" size="50" /></td></tr>
+        <tr><td><input type="text" name="t1" value="Enter your query here and click on Search button" size="50" /></td></tr>
         <tr><td><input type="submit" value="Search" name="b1" onclick="display()"></td></tr>
          </table>
 </center>
