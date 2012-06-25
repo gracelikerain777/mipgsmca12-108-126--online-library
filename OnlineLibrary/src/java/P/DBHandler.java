@@ -18,10 +18,33 @@ public class DBHandler {
     public DBHandler() {
         try {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "SATHISH");
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "S");
             st = con.createStatement();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public int validate(String us, String ps) throws Exception {
+        int n = 0;
+        try {
+            rs = st.executeQuery("select count(*) from USERDETAILS where ID='" + us + "' and PWD='" + ps + "'");
+            while (rs.next()) {
+                n = rs.getInt(1);
+            }
+            if (n == 1) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } catch (SQLException e) {
+            String es = e.toString();
+            if (eh(e).equalsIgnoreCase("ORA-00942")) {
+                st.executeUpdate("CREATE TABLE USERDETAILS(ID VARCHAR2(50) PRIMARY KEY,PWD VARCHAR2(50) NOT NULL)");
+                st.executeUpdate("commit");
+                return validate(us, ps);
+            }
+            return -1;
         }
     }
 

@@ -22,17 +22,17 @@ class fr {
         String s = f1 + "";
         e = s.substring(s.lastIndexOf(".") + 1, s.length());
         if (e.equalsIgnoreCase("doc")) {
-            return f.readDoc(s);
+            return f.readDoc(s)+" doc";
         } else if (e.equalsIgnoreCase("txt")) {
-            return f.readTxt(s);
+            return f.readTxt(s)+" txt "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else if (e.equalsIgnoreCase("pdf")) {
-            return f.readPdf(s);
+            return f.readPdf(s)+" pdf "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else if (e.equalsIgnoreCase("xls")) {
-            return f.readXl(s);
+            return f.readXl(s)+" xls "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else if (e.equalsIgnoreCase("html")) {
-            return f.readHtml(s);
+            return f.readHtml(s)+" html "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else {
-            return "Format does not support.";
+            return s.substring(s.lastIndexOf("\\")+1,s.length())+" "+s.substring(s.lastIndexOf(".") + 1, s.length());
         }
     }
 
@@ -98,6 +98,8 @@ class fr {
         try {
             PdfReader reader = new PdfReader(s1);
             int i = 1, n = reader.getNumberOfPages();
+            if(n>2)
+                n=2;
             for (; i <= n; i++) {
                 s += PdfTextExtractor.getTextFromPage(reader, i);
                 s = cleanText(s);
@@ -261,11 +263,11 @@ class p2 {
         return a;
     }
 
-    public String[] start(String q, String d[][]) throws Exception {
+    public String[][] start(String q, String d[][]) throws Exception {
         DBHandler od = new DBHandler();
         int i, j = 0, N, R = 0, n[], r[], k;
         BufferedReader b, fp1;
-        String query[], documents[], s[], s1[];
+        String query[], documents[], s[], s1[][];
         File fp[];
         fr f = new fr();
         query = q.split(" ");
@@ -317,19 +319,21 @@ class p2 {
                 D[3][j] += w[3][i] * v[i][j];
             }
         }
-        s1 = new String[N];
+        s1 = new String[N][3];
         for (i = 0; i < N; i++) {
-            s1[i] = d[i][0].substring(d[i][0].lastIndexOf("\\") + 1, d[i][0].length());
+            s1[i][0] = d[i][0].substring(d[i][0].lastIndexOf("\\") + 1, d[i][0].length());
         }
         u = new double[N][3];
         for (i = 0; i < N; i++) {
-            u[i][0] = od.getRank(q, s1[i]);
+            u[i][0] = od.getRank(q, s1[i][0]);
             u[i][1] = D[0][i];
             u[i][2] = i;
         }
         u = sort(u);
         for (i = 0; i < N; i++) {
-            s1[i] = d[(int) u[i][2]][0];
+            s1[i][0] = d[(int) u[i][2]][0];
+            s1[i][1]=""+u[i][0];
+            s1[i][2]=""+u[i][1];
         }
 
         return s1;
@@ -497,7 +501,7 @@ class Vsm {
 
 public class Search {
 
-    public String[] start(String s1) throws Exception {
+    public String[][] start(String s1) throws Exception {
         String s[][] = new Vsm().start(s1, "D:\\t\\OnlineLibrary\\web\\srcdoc");
         for (int n = 0; n < s.length; n++) {
             if (Double.parseDouble(s[n][1]) > 0.1) {

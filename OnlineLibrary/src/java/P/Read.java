@@ -16,22 +16,22 @@ import org.apache.poi.hwpf.extractor.*;
 
 public class Read {
 
-    public String readFile(String s) {
-        Read f = new Read();
+   public String readFile(String s) {
+        fr f = new fr();
         String e = "";
         e = s.substring(s.lastIndexOf(".") + 1, s.length());
         if (e.equalsIgnoreCase("doc")) {
-            return f.readDoc(s);
+            return f.readDoc(s)+" doc";
         } else if (e.equalsIgnoreCase("txt")) {
-            return f.readTxt(s);
+            return f.readTxt(s)+" || txt "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else if (e.equalsIgnoreCase("pdf")) {
-            return f.readPdf(s);
+            return f.readPdf(s)+" || pdf "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else if (e.equalsIgnoreCase("xls")) {
-            return f.readXl(s);
+            return f.readXl(s)+" || xls "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else if (e.equalsIgnoreCase("html")) {
-            return f.readHtml(s);
+            return f.readHtml(s)+" || html "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else {
-            return "Format does not support.";
+            return s.substring(s.lastIndexOf("\\")+1,s.length())+" "+s.substring(s.lastIndexOf(".") + 1, s.length());
         }
     }
 
@@ -97,6 +97,8 @@ public class Read {
         try {
             PdfReader reader = new PdfReader(s1);
             int i = 1, n = reader.getNumberOfPages();
+            if(n>1)
+                n=1;
             for (; i <= n; i++) {
                 s += PdfTextExtractor.getTextFromPage(reader, i);
                 s = cleanText(s);
