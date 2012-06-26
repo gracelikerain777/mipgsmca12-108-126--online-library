@@ -325,7 +325,7 @@ class p2 {
         }
         u = new double[N][3];
         for (i = 0; i < N; i++) {
-            u[i][0] = od.getRank(q, s1[i][0]);
+            u[i][0] = od.getRank(q, s1[i][0],D[0][i]);
             u[i][1] = D[0][i];
             u[i][2] = i;
         }

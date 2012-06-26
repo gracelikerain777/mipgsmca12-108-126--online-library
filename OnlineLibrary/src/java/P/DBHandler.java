@@ -215,9 +215,10 @@ public class DBHandler {
         return -1;
     }
 
-    public int getRank(String qs, String ds) throws Exception {
+    public int getRank(String qs, String ds,double w1) throws Exception {
         int q, n, d = insertDocument(ds);
         n = 1;
+        String w=""+w1;
         q = insertQuery(qs);
         try {
             rs = st.executeQuery("select count(*) from Ranks where qid=" + q + " and did=" + d);
@@ -225,7 +226,7 @@ public class DBHandler {
                 n = rs.getInt(1);
             }
             if ((n == 0)) {
-                st.executeUpdate("insert into Ranks values(" + q + "," + d + "," + "0)");
+                st.executeUpdate("insert into Ranks values(" + q + "," + d + "," + "0,"+w+")");
                 return 0;
             } else {
                 rs = st.executeQuery("select rnk from Ranks where qid=" + q + " and did=" + d);
@@ -237,9 +238,9 @@ public class DBHandler {
         } catch (SQLException e) {
             String es = e.toString();
             if (eh(e).equalsIgnoreCase("ORA-00942")) {
-                st.executeUpdate("CREATE TABLE RANKS(QID NUMBER(6) REFERENCES QUERRIES(QID),DID NUMBER(6) REFERENCES DOCUMENTS(DID),RNK NUMBER(6) NOT NULL, PRIMARY KEY(QID,DID))");
+                st.executeUpdate("CREATE TABLE RANKS(QID NUMBER(6) REFERENCES QUERRIES(QID),DID NUMBER(6) REFERENCES DOCUMENTS(DID),RNK NUMBER(6) NOT NULL,WGHT VARCHAR2(20) NOT NULL,PRIMARY KEY(QID,DID))");
                 st.executeUpdate("commit");
-                return getRank(qs, ds);
+                return getRank(qs, ds,w1);
             }
         }
         return -1;
@@ -267,9 +268,9 @@ public class DBHandler {
         } catch (SQLException e) {
             String es = e.toString();
             if (eh(e).equalsIgnoreCase("ORA-00942")) {
-                st.executeUpdate("CREATE TABLE RANKS(QID NUMBER(6) REFERENCES QUERY1(QID),DID NUMBER(6) REFERENCES DOCUMENT1(DID),RNK NUMBER(6), PRIMARY KEY(QID,DID))");
+                st.executeUpdate("CREATE TABLE RANKS(QID NUMBER(6) REFERENCES QUERRIES(QID),DID NUMBER(6) REFERENCES DOCUMENTS(DID),RNK NUMBER(6) NOT NULL,WGHT VARCHAR2(20) NOT NULL,PRIMARY KEY(QID,DID))");
                 st.executeUpdate("commit");
-                return getRank(qs, ds);
+                return increaseRank(qs, ds);
             }
         }
         return -1;
