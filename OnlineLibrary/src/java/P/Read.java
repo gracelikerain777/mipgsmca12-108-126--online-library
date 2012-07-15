@@ -23,13 +23,13 @@ public class Read {
         if (e.equalsIgnoreCase("doc")) {
             return f.readDoc(s)+" doc";
         } else if (e.equalsIgnoreCase("txt")) {
-            return f.readTxt(s)+" || txt "+s.substring(s.lastIndexOf("\\")+1,s.length());
+            return f.readTxt(s)+" txt "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else if (e.equalsIgnoreCase("pdf")) {
-            return f.readPdf(s)+" || pdf "+s.substring(s.lastIndexOf("\\")+1,s.length());
+            return f.readPdf(s)+" pdf "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else if (e.equalsIgnoreCase("xls")) {
-            return f.readXl(s)+" || xls "+s.substring(s.lastIndexOf("\\")+1,s.length());
+            return f.readXl(s)+" xls "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else if (e.equalsIgnoreCase("html")) {
-            return f.readHtml(s)+" || html "+s.substring(s.lastIndexOf("\\")+1,s.length());
+            return f.readHtml(s)+" html "+s.substring(s.lastIndexOf("\\")+1,s.length());
         } else {
             return s.substring(s.lastIndexOf("\\")+1,s.length())+" "+s.substring(s.lastIndexOf(".") + 1, s.length());
         }

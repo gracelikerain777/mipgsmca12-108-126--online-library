@@ -45,16 +45,17 @@ public class uploadfile extends HttpServlet {
             int startPos = ((file.substring(0, pos)).getBytes()).length;
             int endPos = ((file.substring(0, boundaryLocation)).getBytes()).length;
             DBHandler d=new DBHandler();
-            if(d.isExists(saveFile)==1)
+            if(d.isDocumentExist(saveFile)==1)
             throw new Exception("<br><br>Sorry,<br><br>A file with this name already exist in the server.<br><br>Please try again with different name.");    
             if(saveFile.substring(saveFile.lastIndexOf(".")+1,saveFile.length()).equalsIgnoreCase("exe"))
             throw new Exception("<br><br>Sorry,<br><br>Execution (.exe) files does not allowed to upload because of security purpose.");
             int i=d.insertDocument(saveFile);
-            saveFile = "I:\\" + saveFile;
+            saveFile = "D:\\" + saveFile;
             FileOutputStream fileOut = new FileOutputStream(saveFile);
             fileOut.write(dataBytes, startPos, (endPos - startPos));
             fileOut.flush();
             fileOut.close();
+            d.createIndex(saveFile);
             out.println("<br><h1>Congratulations!<br><br>Your file uploded into the server successfully.<br><br>Your file id is:"+i);
         } else {
             throw new Exception("Please Select a file.");

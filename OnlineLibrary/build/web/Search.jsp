@@ -16,7 +16,7 @@
             <img src="Online1.jpg" height="50" width="150" />
             <%String s = request.getParameter("t1");%>
             <input type="text" name="t1" value="<%=s%>"  size="50" />
-            <input type="submit" value="search" name="b1">
+            <input type="submit" value="Search" name="b1">
             <%@page import="P.Search,P.Read" %>
             <%
                 if (s.equalsIgnoreCase("Enter your query here and click on Search button")) {
@@ -24,6 +24,13 @@
                 } else {
                     Search se = new Search();
                     s1 = se.start(s);
+                   if(s1.length==0)
+                                             {
+                       out.println("<center><br><br><br><br><b>Sorry,<br><br>Your query did not generate any results.<br><br>That means none of documents which are stored in server match with your query.</center>");
+                                             }
+                    else
+                                               {
+                   
                     for (int i = 0; i < s1.length; i++) {
                         Read R = new Read();
                         s2 = R.readFile(s1[i][0]);
@@ -58,7 +65,8 @@
 
                     }
                 }
-
+                                       }
+//out.println("<br> CASE:"+s1[s1.length-1][0]);
             %>  
         </form>  
     </body>

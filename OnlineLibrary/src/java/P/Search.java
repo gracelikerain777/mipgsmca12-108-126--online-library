@@ -22,17 +22,17 @@ class fr {
         String s = f1 + "";
         e = s.substring(s.lastIndexOf(".") + 1, s.length());
         if (e.equalsIgnoreCase("doc")) {
-            return f.readDoc(s)+" doc";
+            return f.readDoc(s) + " doc";
         } else if (e.equalsIgnoreCase("txt")) {
-            return f.readTxt(s)+" txt "+s.substring(s.lastIndexOf("\\")+1,s.length());
+            return f.readTxt(s) + " txt " + s.substring(s.lastIndexOf("\\") + 1, s.length());
         } else if (e.equalsIgnoreCase("pdf")) {
-            return f.readPdf(s)+" pdf "+s.substring(s.lastIndexOf("\\")+1,s.length());
+            return f.readPdf(s) + " pdf " + s.substring(s.lastIndexOf("\\") + 1, s.length());
         } else if (e.equalsIgnoreCase("xls")) {
-            return f.readXl(s)+" xls "+s.substring(s.lastIndexOf("\\")+1,s.length());
+            return f.readXl(s) + " xls " + s.substring(s.lastIndexOf("\\") + 1, s.length());
         } else if (e.equalsIgnoreCase("html")) {
-            return f.readHtml(s)+" html "+s.substring(s.lastIndexOf("\\")+1,s.length());
+            return f.readHtml(s) + " html " + s.substring(s.lastIndexOf("\\") + 1, s.length());
         } else {
-            return s.substring(s.lastIndexOf("\\")+1,s.length())+" "+s.substring(s.lastIndexOf(".") + 1, s.length());
+            return s.substring(s.lastIndexOf("\\") + 1, s.length()) + " " + s.substring(s.lastIndexOf(".") + 1, s.length());
         }
     }
 
@@ -98,8 +98,9 @@ class fr {
         try {
             PdfReader reader = new PdfReader(s1);
             int i = 1, n = reader.getNumberOfPages();
-            if(n>2)
-                n=2;
+            if (n > 2) {
+                n = 2;
+            }
             for (; i <= n; i++) {
                 s += PdfTextExtractor.getTextFromPage(reader, i);
                 s = cleanText(s);
@@ -325,15 +326,15 @@ class p2 {
         }
         u = new double[N][3];
         for (i = 0; i < N; i++) {
-            u[i][0] = od.getRank(q, s1[i][0],D[0][i]);
+            u[i][0] = od.getRank(q, s1[i][0], D[0][i]);
             u[i][1] = D[0][i];
             u[i][2] = i;
         }
         u = sort(u);
         for (i = 0; i < N; i++) {
             s1[i][0] = d[(int) u[i][2]][0];
-            s1[i][1]=""+u[i][0];
-            s1[i][2]=""+u[i][1];
+            s1[i][1] = "" + u[i][0];
+            s1[i][2] = "" + u[i][1];
         }
 
         return s1;
@@ -352,14 +353,9 @@ class Vsm {
     ArrayList<Double> similarity_al = new ArrayList<Double>();
     ArrayList doc_paths = new ArrayList();
 
-    void get_Documents_From_Directory(String dir_name) throws IOException {
+    void get_Documents_From_Directory(File[] list_of_files) throws IOException {
         fr f = new fr();
-        File directory = new File(dir_name);
-        File[] list_of_files = directory.listFiles();
-        for (int j = 0; j < list_of_files.length; j++) {
-            if (list_of_files[j].isDirectory()) {
-                get_Documents_From_Directory(list_of_files[j].getAbsolutePath());
-            }
+          for (int j = 0; j < list_of_files.length; j++) {
             if (list_of_files[j].isFile()) {
                 File path = list_of_files[j];
                 String doc_content = "";
@@ -488,9 +484,9 @@ class Vsm {
         return s;
     }
 
-    public String[][] start(String q, String d) throws Exception {
+    public String[][] start(String q, File f[]) throws Exception {
         Vsm v = new Vsm();
-        v.get_Documents_From_Directory(d);
+        v.get_Documents_From_Directory(f);
         v.get_Query_Doc(q);
         v.cal_Idf();
         v.cal_Tf_Idf_Query();
@@ -502,15 +498,46 @@ class Vsm {
 public class Search {
 
     public String[][] start(String s1) throws Exception {
-        String s[][] = new Vsm().start(s1, "D:\\t\\OnlineLibrary\\web\\srcdoc");
-        for (int n = 0; n < s.length; n++) {
-            if (Double.parseDouble(s[n][1]) > 0.1) {
-                s[n][1] = "" + 1;
+        double u[][];
+        String s[][], t[][], t1[][], path = "D:\\t\\OnlineLibrary\\web\\srcdoc";
+        DBHandler d = new DBHandler();
+        s = d.getValues(s1);
+        if (s[0][0].equalsIgnoreCase("-1")) {
+            System.out.println("New Query. " + new File(path).list().length);
+            File f[] = d.getDocuments(s1);
+            if (f.length > 0) {
+                s = new Vsm().start(s1, f);
+                for (int n = 0; n < s.length; n++) {
+                    if (Double.parseDouble(s[n][1]) > 0.08) {
+                        s[n][1] = "" + 1;
+                    } else {
+                        s[n][1] = "" + 0;
+                    }
+                }
+                p2 p = new p2();
+                return p.start(s1, s);
             } else {
-                s[n][1] = "" + 0;
+                System.out.println("file length is:"+f.length);
+                return new String[0][0];
+                
             }
+        } else {
+            System.out.println("query already exist else part:");
+            u = new double[s.length][3];
+            t = new String[s.length][3];
+            for (int i = 0; i < s.length; i++) {
+                u[i][0] = Double.parseDouble(s[i][1]);
+                u[i][1] = Double.parseDouble(s[i][2]);
+                u[i][2] = i;
+            }
+            u = new p2().sort(u);
+            for (int i = 0; i < s.length; i++) {
+                t[i][0] = path + "\\" + s[(int) u[i][2]][0];
+                t[i][1] = "" + u[i][0];
+                t[i][2] = "" + u[i][1];
+            }
+            return t;
+            
         }
-        p2 p = new p2();
-        return p.start(s1, s);
     }
 }
