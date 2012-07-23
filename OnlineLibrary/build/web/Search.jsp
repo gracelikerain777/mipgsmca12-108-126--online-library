@@ -4,10 +4,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Search Results</title>
-
+       
     </head>
     <body>
-        <%!            String s1[][], s2, q[], d[];
+         <%!           String s1[][], s2, q[], d[];
             int a[], x;
             int i = 0;
 

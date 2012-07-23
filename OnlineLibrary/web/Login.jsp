@@ -17,7 +17,8 @@ p { color:#FFFFFF;font-size:10pt; font-family:Lucida Fax }
         
     </head>
     <body >
-        <form name="l1" action="return validate()">
+
+        <form name="l1" action="Validate" method="post">
             <center>
                 <pre>
 
@@ -29,7 +30,7 @@ p { color:#FFFFFF;font-size:10pt; font-family:Lucida Fax }
 
 <tr><td><b>Enter User ID</b>     </td><td><input type="text" name="t1" id="t1"></td></tr>
 <tr><td><b>Enter Password </b></td><td><input type="password" name="t2" id="t2"></td></tr>
-<tr><td><input type="submit" value="Login" id="s1" ></td></tr>
+<tr><td><input type="submit" value="Login" id="s1" ></td><td>New user?  Click here to <a href="Registration.jsp">Register</a></td></tr>
 <tr><td id="loginerror" style="color: #ffff00;font-size: 20px;text-decoration: blink" ></td></tr>
 
 </table>

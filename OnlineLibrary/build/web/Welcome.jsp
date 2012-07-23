@@ -8,14 +8,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>ONLINE LIBRARY - Home Page</title>
     </head>
-    <form name="f1" action="Search.jsp">
-    
-        <pre>
-
-
-
+    <%
+    HttpSession hs=request.getSession(true);
+    if(hs.isNew()|hs.getAttribute("login")==null)
+        response.sendRedirect("Login.jsp");
+      %>
+      <form name="f1" action="Search.jsp">
+   <pre>
+  <br><h3>Welcome <%=hs.getAttribute("name") %>.</h3>                                                                                                <a href="upload.jsp">Upload file</a>    <a href="Logout">Logout out</a>
 
 
 

@@ -31,7 +31,90 @@ public class DBHandler {
         }
     }
 
-    public int validate(String us, String ps) throws Exception {
+    public String getName(String s) throws Exception {
+        rs = st.executeQuery("select Name from USERDETAILS where id='" + s + "'");
+        while (rs.next()) {
+            return rs.getString(1);
+        }
+        return "";
+    }
+
+    public int validateDetails(String s1[]) {
+        int i, r, j;
+        boolean f = false;
+        String s = s1[1];
+        for (i = 0; i < s.length(); i++) {
+            r = (int) s.charAt(i);
+            if (!((r >= 'A' & r <= 'Z') | (r >= 'a' & r <= 'z'))) {
+                return 1;
+            }
+        }
+        s = s1[4];
+        for (i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '@') {
+                for (j = 0; j < s.length(); j++) {
+                    if (s.charAt(j) == '.') {
+                        f = true;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        if (!f) {
+            return 3;
+        }
+        s = s1[5];
+        if (s.length() != 10) {
+            return 4;
+        }
+        for (i = 0; i < s.length(); i++) {
+            if (s.charAt(i) < '0' | s.charAt(i) > '9') {
+                return 4;
+            }
+        }
+        if (!s1[3].equals(s1[2])) {
+            return 2;
+        }
+
+        return 5;
+    }
+
+    public boolean isUserExist(String s) throws Exception {
+        try {
+            rs = st.executeQuery("select count(*) from USERDETAILS where id='" + s + "'");
+            while (rs.next()) {
+                if (rs.getInt(1) == 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            if (eh(e).equalsIgnoreCase("ORA-00942")) {
+                st.executeUpdate("CREATE TABLE USERDETAILS(ID VARCHAR2(50) PRIMARY KEY,NAME VARCHAR2(50),PWD VARCHAR2(50),EMAIL VARCHAR2(50),MOBILE VARCHAR2(10),GENDER VARCHAR2(6))");
+                st.executeUpdate("commit");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int insertDetails(String s[]) throws Exception {
+        try {
+            st.executeUpdate("insert into USERDETAILS values('" + s[0] + "','" + s[1] + "','" + s[2] + "','" + s[3] + "','" + s[4] + "','" + s[5] + "')");
+            return 1;
+        } catch (SQLException e) {
+            if (eh(e).equalsIgnoreCase("ORA-00942")) {
+                st.executeUpdate("CREATE TABLE USERDETAILS(ID VARCHAR2(50) PRIMARY KEY,NAME VARCHAR2(50),PWD VARCHAR2(50),EMAIL VARCHAR2(50),MOBILE VARCHAR2(10),GENDER VARCHAR2(6))");
+                st.executeUpdate("commit");
+                return insertDetails(s);
+            }
+            return 0;
+        }
+    }
+
+    public boolean validate(String us, String ps) throws Exception {
         int n = 0;
         try {
             rs = st.executeQuery("select count(*) from USERDETAILS where ID='" + us + "' and PWD='" + ps + "'");
@@ -39,17 +122,17 @@ public class DBHandler {
                 n = rs.getInt(1);
             }
             if (n == 1) {
-                return 1;
+                return true;
             } else {
-                return 0;
+                return false;
             }
         } catch (SQLException e) {
             if (eh(e).equalsIgnoreCase("ORA-00942")) {
-                st.executeUpdate("CREATE TABLE USERDETAILS(ID VARCHAR2(50) PRIMARY KEY,PWD VARCHAR2(50) NOT NULL)");
+                st.executeUpdate("CREATE TABLE USERDETAILS(ID VARCHAR2(50) PRIMARY KEY,NAME VARCHAR2(50),PWD VARCHAR2(50),EMAIL VARCHAR2(50),MOBILE VARCHAR2(10),GENDER VARCHAR2(6))");
                 st.executeUpdate("commit");
-                return validate(us, ps);
+                return false;
             }
-            return -1;
+            return false;
         }
     }
 
@@ -425,12 +508,16 @@ public class DBHandler {
         i = 0;
         j = 0;
         String s1[];
-        rs = st.executeQuery("select count(*) from Documents");
-        while (rs.next()) {
-            n = rs.getInt(1);
+        try {
+            rs = st.executeQuery("select count(*) from Documents");
+            while (rs.next()) {
+                n = rs.getInt(1);
+            }
+            s1 = new String[n];
+            rs = st.executeQuery("select dname from Documents");
+        } catch (Exception e) {
+            return true;
         }
-        s1 = new String[n];
-        rs = st.executeQuery("select dname from Documents");
         while (rs.next()) {
             s1[i] = rs.getString(1);
             i++;
